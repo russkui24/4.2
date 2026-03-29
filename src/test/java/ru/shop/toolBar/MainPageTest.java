@@ -7,11 +7,16 @@ public class MainPageTest extends BaseTest {
 
     @Test
     public void test(){
+
         mainPage.openUrl();
 
         mainPage.enableConstructor();
 
         mainPage.clickButtonCookie();
+
+        mainPage.toolBar();
+
+        Assertions.assertEquals("left: 47.751%;", mainPage.sliderBar(),"получили нужный процент ширины");
 
     }
 

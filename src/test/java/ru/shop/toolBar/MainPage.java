@@ -1,6 +1,7 @@
 package ru.shop.toolBar;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -52,17 +53,26 @@ public class MainPage {
         }
     }
 
-    //Метод для скролла
+    /**
+     * Метод для скроллинга
+     * @param element
+     */
     private void scrollToElement(WebElement element){
         jsExecutor.executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
     }
 
-    //Скроллим до калькулятора
+    /**
+     * Скроллимся до элемента
+     */
     public void enableConstructor(){
         WebElement element = driver.findElement(By.xpath("//section[contains(@class,'product-calculator-constructor')]"));
         scrollToElement(element);
     }
 
+
+    /**
+     * Метод для работы с элементом по Куки
+     */
     public void clickButtonCookie(){
         // Сначала проверяем, есть ли вообще cookie-баннер (может, его уже нет)
         List<WebElement> element = driver.findElements(buttonCookie);
@@ -77,6 +87,45 @@ public class MainPage {
        //Ждем когда исчезнет элемент
      wait.until(ExpectedConditions.invisibilityOfElementLocated(buttonCookie));
 
+    }
+
+    /**
+     * Задаем значение для x и y
+     */
+    int xoffSet = 300;
+    int yoffSet = 0;
+
+    /**
+     * Локатор для слайдера
+     */
+    private final By sliderButton = By.xpath("//div[contains(@class,'el-tooltip__trigger')]");
+
+    /**
+     * Создаем объект для actions
+     * @return
+     */
+    public Actions actions(){
+      return new Actions(driver);
+    }
+
+    /**
+     * Метод для работы с Actions
+     */
+    public void toolBar(){
+        actions()
+                .dragAndDropBy(driver.findElement(sliderButton), xoffSet, yoffSet)
+                .perform();
+        waitForLoader();
+
+    }
+
+    /**
+     * Метод для получения ширины слайдера
+     * @return
+     */
+    public String sliderBar(){
+        WebElement element = driver.findElement(By.xpath("//div[@class='el-slider__button-wrapper']"));
+        return  element.getAttribute("style");
     }
 
 
